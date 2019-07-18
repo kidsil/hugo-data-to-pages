@@ -1,13 +1,16 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = {
-  dataFolder: './data', //Data folder path (will fetch ALL files from here)
+let config = {
+  root: 'example', //Root hugo folder, can be empty
+  dataFolder: 'data', //Data folder path (will fetch ALL files from here)
   type: 'article', //Type name [basically layout] (save it under "layouts/NAME/single.html" or themes/THEME/layouts/NAME/single.html). Can be overridden on individual pages by defining "type" under "fields"
   pages: 'articles', //Pages elemenet in your data, in case it's "posts" or "articles" etc.
   contentPath: 'content', //Path to content directory (in case it's not "content")
   hugoPath: '/snap/bin/hugo' //Path to hugo binary (if global, e.g. /snap/bin/hugo)
 }
+config.root = (!!config.root ? config.root : '.') + '/';
+
 const fs = require('fs');
 const fse = require('fs-extra');
 const prompts = require('prompts');
@@ -15,7 +18,7 @@ const prompts = require('prompts');
 const converToObject = (file) => {
   const jsyml = require('js-yaml');
   const filetype = file.split('.').pop();
-  const fileContent = fs.readFileSync(config.dataFolder + '/' + file, 'utf8');
+  const fileContent = fs.readFileSync(config.root + config.dataFolder + '/' + file, 'utf8');
   if (filetype === 'json') return JSON.parse(fileContent);
   if (filetype === 'yml' || filetype === 'yaml') return jsyml.safeLoad(fileContent);
 };
@@ -25,7 +28,7 @@ const build = async (add, force) => {
   if (!config.contentPath || config.contentPath === '/') return console.log('Error: config.contentPath cannot be \'\' or \'/\')!');
   let dataFiles;
   try {
-    dataFiles = fs.readdirSync(config.dataFolder);
+    dataFiles = fs.readdirSync(config.root + config.dataFolder);
   } catch (e) {
     return console.log('e', e);
   }
@@ -38,7 +41,7 @@ const build = async (add, force) => {
       if (!pages[j].fields) return console.log('Error: Pages must include fields!');
       if (!pages[j].fields.type) pages[j].fields.type = config.type;
       
-      const pagePath = config.contentPath + '/' + pages[j].path;
+      const pagePath = config.root + config.contentPath + '/' + pages[j].path;
       if (add) {
         fse.ensureDirSync(pagePath);
         fs.writeFileSync(pagePath + '/index.md', JSON.stringify(pages[j].fields) + '\n');
@@ -72,7 +75,7 @@ const main = async (mode, force) => {
     console.log('Running Hugo Server...');
     process.on('SIGINT', () => {}); //Not exiting on ctrl+c (instead, going to "catch" clause)
     try {
-      await execSync(config.hugoPath + ' server');
+      await execSync('(cd ' + config.root + ' && ' + config.hugoPath + ' server)');
     } catch (e) {
       console.log('Removing data-generated files...');
       await build(false, force);
@@ -86,7 +89,7 @@ const main = async (mode, force) => {
     console.log('Building data-generated files...');
     await build();
     console.log('Running Hugo (build)...');
-    await execSync(config.hugoPath);
+    await execSync('(cd ' + config.root + ' && ' + config.hugoPath + ')');
     console.log('Removing data-generated files...');
     await build(false, force);
   }
