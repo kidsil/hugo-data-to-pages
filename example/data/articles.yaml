@@ -1,0 +1,28 @@
+articles:
+  - path: paul-mccartney
+    fields:
+      name: Paul McCartney
+      bithday: 1942-06-18
+      birthplace: Walton, Liverpool, UK
+      children: 5
+
+  - path: john-lennon
+    fields:
+      name: John Lennon
+      bithday: 1940-10-09
+      birthplace: Liverpool, UK
+      children: 2
+
+  - path: george-harrison
+    fields:
+      name: George Harrison
+      bithday: 1943-02-25
+      birthplace: Liverpool, UK
+      children: 1
+
+  - path: ringo-starr
+    fields:
+      name: Ringo Starr
+      bithday: 1940-07-07
+      birthplace: Dingle, Liverpool, UK
+      children: 3
