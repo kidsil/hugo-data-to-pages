@@ -29,6 +29,7 @@ The entire script is in `hugo.js`, the `example/` is just an example hugo site.
 There are 3 available commands:
 
 - `./hugo.js` (basically hugo build to public directory)
+- `./hugo.js generate` (only generate folders/files from data, same as above but without executing hugo build)
 - `./hugo.js server` (basically hugo server, with cleanup on exit)
 - `./hugo.js clean` (trigger cleanup in case the script didn't remove the generated folders)
 
