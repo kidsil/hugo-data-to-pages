@@ -65,8 +65,11 @@ const build = async (add, force) => {
   }
 
 };
-const main = async (mode, force) => {
-  force = (force === '-f' || force === '--force') ? true : false;
+const main = async (argvs) => {
+  const mode = typeof argvs._[0] === 'undefined' ? 'default' : argvs._[0];
+  const force = typeof argvs['force'] === 'undefined' ? false : true;
+  const configFile = typeof argvs['configFile'] === 'undefined' ? false : require('./' + argvs['configFile']);
+  Object.assign(config, configFile); //overriding default settings
   const { execSync } = require('child_process');
   if (mode === 'server') {
     //server mode - create data-generated files, run hugo server, remove data-generated files on stop
@@ -101,8 +104,20 @@ const main = async (mode, force) => {
   console.log('Done!');
 };
 
-const args = process.argv.slice(2);
+// Defining commands and flags
+const argvs = require('yargs')
+  .command('$0', 'Generate folders/files from data, then run `hugo build`')
+  .command('generate', 'Generate folders/files from data (does not run hugo build)')
+  .command('server', 'Generate folders/files from data, run `hugo server`, then cleanup on exit')
+  .command('clean', 'Trigger cleanup manually')
+  .option('force', {
+    alias: 'f',
+    description: 'Use this flag to skip folder removal prompts (be careful with this one!)'
+  })
+  .option('configFile', {
+    alias: 'c',
+    description: 'Optionally use an external config file (JSON format only)'
+  })
+  .argv;
 
-//in case no arguments but force flag is there
-if (!!args[0] && args[0].search('-') === 0) args.unshift(undefined);
-main(...args);
+main(argvs);
