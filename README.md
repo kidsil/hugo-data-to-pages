@@ -33,7 +33,9 @@ There are 3 available commands:
 - `./hugo.js server` (basically hugo server, with cleanup on exit)
 - `./hugo.js clean` (trigger cleanup in case the script didn't remove the generated folders)
 
-There's also a `-f` or `--force` flag to skip folder removal prompts (be careful with this one!)
+Flags:
+- `-c FILE.json` or `--configFile FILE.json` flag to override default config (check hugoConfig-example.json)
+- `-f` or `--force` flag to skip folder removal prompts (be careful with this one!)
 
 ## Author
 
