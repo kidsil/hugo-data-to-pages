@@ -9,7 +9,6 @@ let config = {
   contentPath: 'content', //Path to content directory (in case it's not "content")
   hugoPath: '/snap/bin/hugo' //Path to hugo binary (if global, e.g. /snap/bin/hugo)
 }
-config.root = (!!config.root ? config.root : '.') + '/';
 
 const fs = require('fs');
 const fse = require('fs-extra');
@@ -70,6 +69,7 @@ const main = async (argvs) => {
   const force = typeof argvs['force'] === 'undefined' ? false : true;
   const configFile = typeof argvs['configFile'] === 'undefined' ? false : require('./' + argvs['configFile']);
   Object.assign(config, configFile); //overriding default settings
+  config.root = (!!config.root ? config.root : '.') + '/';
   const { execSync } = require('child_process');
   if (mode === 'server') {
     //server mode - create data-generated files, run hugo server, remove data-generated files on stop
