@@ -10,6 +10,7 @@
     "fs-extra": "^8.1.0",
     "js-yaml": "^3.13.1",
     "prompts": "^2.1.0",
+    "toml": "^3.0.0",
     "yargs": "^13.3.0"
   },
   "devDependencies": {},

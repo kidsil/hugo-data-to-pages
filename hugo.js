@@ -16,10 +16,12 @@ const prompts = require('prompts');
 
 const converToObject = (file) => {
   const jsyml = require('js-yaml');
+  const jstml = require('toml');
   const filetype = file.split('.').pop();
   const fileContent = fs.readFileSync(config.root + config.dataFolder + '/' + file, 'utf8');
   if (filetype === 'json') return JSON.parse(fileContent);
   if (filetype === 'yml' || filetype === 'yaml') return jsyml.safeLoad(fileContent);
+  if (filetype === 'toml') return jstml.parse(fileContent);
 };
 const build = async (add, force) => {
   if (typeof add === 'undefined') add = true;
