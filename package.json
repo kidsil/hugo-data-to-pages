@@ -8,10 +8,10 @@
   },
   "dependencies": {
     "fs-extra": "^8.1.0",
-    "js-yaml": "^3.13.1",
-    "prompts": "^2.1.0",
+    "js-yaml": "^3.14.1",
+    "prompts": "^2.4.1",
     "toml": "^3.0.0",
-    "yargs": "^13.3.0"
+    "yargs": "^13.3.2"
   },
   "devDependencies": {},
   "scripts": {
