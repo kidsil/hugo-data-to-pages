@@ -5,3 +5,6 @@
 /example/resources
 
 node_modules/*
+
+# Tracks generated folders between generate and cleanup
+.hugo-data-to-pages.json

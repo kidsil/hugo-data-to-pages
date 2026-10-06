@@ -37,6 +37,16 @@ Flags:
 - `-c FILE.json` or `--configFile FILE.json` flag to override default config (check hugoConfig-example.json)
 - `-f` or `--force` flag to skip folder removal prompts (be careful with this one!)
 
+#### Notes
+
+- The config file path is relative to the directory you run the script from.
+- Hugo is expected on your `PATH`; otherwise set `hugoPath` in the config file.
+- Only `.json`, `.yml`, `.yaml` and `.toml` files in the data folder are read, anything else is skipped.
+- Every page `path` must be unique, stay inside the content folder and not sit inside another generated page. A page is never generated over a folder that already exists.
+- Generated folders are tracked in `.hugo-data-to-pages.json` (in the Hugo root) until they are cleaned up, so add the file to your `.gitignore`. Cleanup only removes folders listed there, and leaves a folder alone if anything in it changed since it was generated.
+- Without a terminal to confirm on (CI, pipes) nothing is removed unless you pass `--force`.
+- Upgrading from an older version: run `clean` with the old version first (or delete the generated folders by hand), as folders generated before the tracking file existed are not recognised.
+
 ## Author
 
 [kidsil](https://github.com/kidsil)
